@@ -11,7 +11,7 @@ __version__ = "1.0"
 import ipaddress
 import subprocess
 
-TARGET_SUBNETS = ["192.0.2.0/24","10.100.1.0/30","200.1.1.0/24"] #definisco le subnet per il lab type_1
+TARGET_SUBNETS = ["192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24", "192.168.4.0/24", "10.0.1.0/30", "10.0.2.0/30"] #definisco le subnet per il lab type_4
 PORT_RANGE = "80-9000"
 OUTPUT_FILE = "scan_results.txt"
 
