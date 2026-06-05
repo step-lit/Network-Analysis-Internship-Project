@@ -1,0 +1,2 @@
+ip address add 210.0.4.10/24 dev eth0
+ip route add default via 210.0.4.3 dev eth0

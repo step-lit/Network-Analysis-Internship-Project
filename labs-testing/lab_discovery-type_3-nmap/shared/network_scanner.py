@@ -14,7 +14,7 @@ import json
 import re
 import os
 
-TARGET_SUBNETS = []
+TARGET_SUBNETS = ["110.0.0.0/24","110.0.4.0/24","210.0.3.0/24","10.0.1.0/30","10.0.0.0/30","210.0.4.0/24"] #definisco le subnet per il lab type_3
 PORT_RANGE = "80-9000"
 OUTPUT_JSON = "scan_results.json"
 EXPECTED_JSON = "scan_expected.json"
