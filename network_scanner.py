@@ -26,9 +26,9 @@ scan_data = {} #dizionario inizialmente vuoto per contenere i dati della network
 
 #funzione che trova ed inserisce tutte le subnet e gli host attivi, presenti nella rete, all'interno di scan_data
 def network_discovery():
-    print("=============================================")
-    print("||    NETWORK DISCOVERY: Scan iniziato     ||")
-    print("=============================================")
+    print("=============================================================")
+    print("||              HOST DISCOVERY: Scan iniziato              ||")
+    print("=============================================================")
 
     nmap = nmap3.NmapScanTechniques() #oggetto della libreria nmap3 per scansioni ad alto livello
 
@@ -40,38 +40,137 @@ def network_discovery():
         #ufficialmente sostituito da -sn (no port scan) nelle versioni piu' recenti di nmap;
         result = nmap.nmap_ping_scan(subnet)
         
-        for key, value in result.items(): #key: host ip; value: dict of details
+        for key, value in result.items(): #key: host ip; value: dict of details     
+
             #recupero dallo scan solo gli host attivi che hanno "state" = "up"
             if isinstance(value, dict) and value.get("state", {}).get("state") == "up":
                 ip = key
                 print(f"Host trovato: {ip}! Lo aggiungo...")
-                
-                #estraggo il mac address dell'host
-                mac_info = value.get("macaddress")
-                if isinstance(mac_info,dict) and mac_info.get("addr"):
-                    mac_address = mac_info.get("addr")
-                else:
-                    mac_address = "null (localhost)"
 
-                #inizio a creare la struttura dati per l'ip trovato
+                #estraggo lo stato ed il mac address dell'ip
+                state_info = value.get("state", {})
+                reason = state_info.get("reason", "")
+                mac_info = value.get("macaddress")
+
+                mac_address = "null"
+
+                #se la risposta risulta da se stesso segna localhost
+                if reason == "localhost-response":
+                    mac_address = "localhost"
+                #altrimenti viene aggiunto il suo valore
+                elif mac_info:
+                    mac_address = mac_info.get("addr", "null")
+
+                #inizializzo la struttura dati per l'ip trovato
                 scan_data[subnet][ip] = {
                     "mac": mac_address,
-                    "os": "Unknown",
+                    "os": "unknown",
                     "ports": [],
                     "services": {}
                 }
 
-    print("Fase di network discovery terminata.\n")
+    print("Fase di host discovery terminata.\n")
 
+
+
+#funzione che processa lo scan delle porte ed dei servizi per un singolo host
+#aggiorna direttamente details_map con le chiavi "ports" e "services"
+def process_ports(host_data, details_map):
+    ports_list = host_data.get("ports", [])
+
+    if not isinstance(ports_list, list) or len(ports_list) == 0:
+        details_map["ports"] = []
+        details_map["services"] = {}
+        return
+
+    open_ports = []
+    services_map = {}
+
+    for port_info in ports_list:
+        port_str = port_info.get("portid")
+        protocol = port_info.get("protocol", "tcp")
+
+        #scarto le porte open|filtered perche' potrebbero essere uno stato di UDP senza risposta
+        state = port_info.get("state", "")
+        if state == "open|filtered":
+            continue
+                    
+        #se non trova una stringa sulla chiave portid salta la porta
+        if not port_str:
+            continue
+                    
+        port_int = int(port_str)
+        open_ports.append(port_int)
+        print(f"   -> adding port: {port_int}/{protocol}")
+
+        #estraggo il servizio
+        service_info = port_info.get("service", {})
+        service_name = service_info.get("name", "")
+        service_product = service_info.get("product", "")
+        service_version = service_info.get("version", "")
+        service_extrainfo = service_info.get("extrainfo", "")
+
+        details = []
+        if service_product:
+            details.append(service_product)
+        if service_version:
+            details.append(f"({service_version})")
+        if service_extrainfo:
+            details.append(service_extrainfo)
+
+        if details:
+            service_desc = f"{service_name}: {' '.join(details)}"
+        else:
+            service_desc = service_name
+
+        #nella stringa per il servizio inserisco sia la porta che il protocollo
+        services_map[f"{port_str}/{protocol}"] = service_desc
+
+    #con set() rimuovo duplicati numerici: nella lista di porte la conto solo una volta
+    #nel caso in cui una porta sia stata trovata sia per protocollo tcp che udp
+    details_map["ports"] = sorted(list(set(open_ports)))
+    details_map["services"] = services_map
+
+
+
+#funzione che processa l'os fingerprinting per un singolo host
+#aggiorna direttamente details_map con la chiave "os"
+#riporta tutti i match con accuracy >= best_accuracy - tolerance
+def process_os(host_data, details_map):
+    os_matches = host_data.get("osmatch", [])
+
+    if not os_matches and isinstance(os_matches, list):
+        details_map["os"] = ""
+        return
+
+    best_accuracy = int(os_matches[0].get("accuracy", "0"))
+
+    #tolerance per l'accuracy (includo tutti gli os rilevati con accuracy best_accuracy-tolerance)
+    tolerance = 2
+    min_accepted_accuracy = best_accuracy - tolerance 
+
+    #raccolgo i match nel range di tolleranza
+    top_matches = [m for m in os_matches if int(m.get("accuracy", "0")) >= min_accepted_accuracy]
+
+                
+    #creo una stringa che riporta gli os e l'accuracy associata ad essi
+    os_details_list = []
+    for m in top_matches:
+        name = m.get("name", "")
+        acc = m.get("accuracy", "")
+        os_details_list.append(f"{name} ({acc}%)")
+
+    details_map["os"] = " | ".join(os_details_list)
+    print(f"   -> OS: {details_map['os']}")
 
 
 
 #funzione che esegue il port scanning per ogni host attivo trovato precedentemente
 #oltre alle porte recupera nome e versione del servizio associato ad ogni porta attiva trovata
 def port_scanning(): 
-    print("=============================================")
-    print("||      PORT SCANNING: Scan iniziato       ||")
-    print("=============================================")
+    print("=============================================================")
+    print("||               PORT SCANNING: Scan iniziato              ||")
+    print("=============================================================")
 
     nmap = nmap3.Nmap()
     
@@ -79,66 +178,17 @@ def port_scanning():
 
         for ip, details_map in ip_map.items():
 
-            print(f"Controllo porte aperte ed OS fingerprinting su: {ip}")
+            print(f"Controllo porte aperte ed OS fingerprinting su {ip}...")
 
             # -sS: TCP SYN scan; -sU: UDP scan; -sV: Service version; -O: OS Fingerprinting
             #--open: active ports only; --max-retries, --min-rate: just 1 retry and 1000 packets/s to speed up UDP scan
             result = nmap.scan_top_ports(ip, 1000, args="-sS -sU -sV -O --open -T4 --max-retries 1 --min-rate 1000")
 
-            ports_list = result.get(ip, [])
+            host_data = result.get(ip, {})
 
-            if not isinstance(ports_list, list) or len(ports_list) == 0:
-                print(f"Nessuna porta aperta (TCP/UDP) rilevata su {ip}.")
-                details_map["ports"] = []
-                details_map["services"] = {}
-            else:
-                print(f"Trovate porte aperte su {ip}!")
-                open_ports = []
-                services_map = {}
-
-                for port_info in ports_list:
-                    port_str = port_info.get("portid")
-                    protocol = port_info.get("protocol", "tcp")
-
-                    #se non trova una stringa sulla chiave portid salta l'ip
-                    if not port_str:
-                        continue
-                    
-                    port_int = int(port_str)
-                    open_ports.append(port_int)
-                    print(f"  -> adding port: {port_int}/{protocol}")
-
-                    #estraggo il servizio
-                    service_info = port_info.get("service", {})
-                    service_name = service_info.get("name", "")
-                    service_version = service_info.get("version", "")
-                    service_extra = service_info.get("extrainfo","")
-
-                    if service_version:
-                        service_desc = f"{service_name} ({service_version})"
-                        if service_extra:
-                            service_desc = f"{service_name} ({service_version} {service_extra})"
-                    else:
-                        service_desc = service_name
-
-                    #nella stringa per il servizio inserisco sia la porta che il protocollo
-                    services_map[f"{port_str}/{protocol}"] = service_desc
-
-                #con set() rimuovo duplicati numerici: nella lista di porte la conto solo una volta
-                #nel caso in cui una porta sia stata trovata sia per protocollo tcp che udp
-                details_map["ports"] = sorted(list(set(open_ports)))
-                details_map["services"] = services_map
-
-            #os fingerprinting        
-            os_matches = result.get("osmatch", [])
-            if os_matches and isinstance(os_matches, list):
-                best_match = os_matches[0]
-                os_name = best_match.get("name", "Unknown")
-                accuracy = best_match.get("accuracy", "0")
-                details_map["os"] = f"{os_name} (Accuracy: {accuracy}%)"
-                print(f"  -> OS: {details_map['os']}")
-            else:
-                details_map["os"] = "OS not identified (root privileges required or no response received)"
+            #chiamata alle funzioni che processano porte ed os per l'ip
+            process_ports(host_data, details_map)
+            process_os(host_data, details_map)
 
     print("Fine del port scanning...\n")
 
@@ -147,9 +197,9 @@ def port_scanning():
 #funzione per fare il confronto tra uno scan atteso (scan_expected.json) e lo scan ottenuto con lo script (scan_results.json)
 #ritorna un elenco ordinato delle differenze
 def compare_scans():
-    print("=============================================")
-    print("||   SCAN COMPARISON: Confronto iniziato   ||")
-    print("=============================================")
+    print("=============================================================")
+    print("||           SCAN COMPARISON: Confronto iniziato           ||")
+    print("=============================================================")
     
     # verifico se il file scan_expected.json esiste
     if not os.path.exists(EXPECTED_JSON):
