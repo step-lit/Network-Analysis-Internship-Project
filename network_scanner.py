@@ -12,11 +12,9 @@ __version__ = "1.3-wip"
 import json
 import os
 import nmap3
-from datetime import datetime
-from zoneinfo import ZoneInfo
 
 TARGET_SUBNETS = ["110.0.0.0/24","110.0.4.0/24","210.0.3.0/24","10.0.1.0/30","10.0.0.0/30","210.0.4.0/24"]
-
+OUTPUT_JSON = "scan_results.json"
 EXPECTED_JSON = "scan_expected.json"
 
 scan_data = {} #dizionario inizialmente vuoto per contenere i dati della network discovery
@@ -24,10 +22,6 @@ scan_data = {} #dizionario inizialmente vuoto per contenere i dati della network
                #le mappe di ip hanno come chiavi gli indirizzi ip e come valori le mappe di dettaglio per quell'ip;
                #definisco nella mappa di dettagli relativa all'host informazioni come nome, porte, servizi attivi, os ed altro; 
 
-
-#------------------------------------------------------------------------------------------------------------------#
-# FUNZIONI PER L'HOST DISCOVERY
-#------------------------------------------------------------------------------------------------------------------#
 
 
 #funzione che trova ed inserisce tutte le subnet e gli host attivi, presenti nella rete, all'interno di scan_data
@@ -78,11 +72,8 @@ def network_discovery():
     print("Fase di host discovery terminata.\n")
 
 
-#------------------------------------------------------------------------------------------------------------------#
-# FUNZIONI PER IL PORT SCANNING
-#------------------------------------------------------------------------------------------------------------------#
 
-#funzione che processa lo scan delle porte, inclusi i servizi attivi, per un singolo host
+#funzione che processa lo scan delle porte ed dei servizi per un singolo host
 #aggiorna direttamente details_map con le chiavi "ports" e "services"
 def process_ports(host_data, details_map):
     ports_list = host_data.get("ports", [])
@@ -195,67 +186,16 @@ def port_scanning():
 
             host_data = result.get(ip, {})
 
-            #chiamata alle funzioni che processano porte (inclusi i servizi) ed os per l'ip
+            #chiamata alle funzioni che processano porte ed os per l'ip
             process_ports(host_data, details_map)
             process_os(host_data, details_map)
 
     print("Fine del port scanning...\n")
 
 
-#------------------------------------------------------------------------------------------------------------------#
-# FUNZIONI PER IL COMPARE SCAN
-#------------------------------------------------------------------------------------------------------------------#
 
-
-#funzione che ritorna un booleano per controllare e stampare differenze tra due set
-#parametri: set_a contiene i valori trovati, set_b i valori attesi, msg_new e msg_missing sono le stampe richieste
-def check_diffs(set_a, set_b, msg_new, msg_missing):
-    new_items = set_a - set_b
-    missing_items = set_b - set_a
-
-    #se entrambi i set sono vuoti non ci sono differenze
-    if not set_a and not set_b:
-        return False
-    
-    for item in sorted(new_items):
-        print(f"{msg_new}: {item}")
-    for item in sorted(missing_items):
-        print(f"{msg_missing}: {item}")
-
-    return True
-
-
-#funzione che chiama check_diffs per confrontare le subnets trovate con quelle attese
-def compare_subnets(subnets_found, subnets_expected):
-    return check_diffs(subnets_found, subnets_expected, "Nuova subnet (inattesa)", "Subnet mancante")
-
-
-#funzione che chiama check_diffs per confrontare gli ip trovati con quelli attesi 
-def compare_hosts(ips_found, ips_expected):
-    return check_diffs(ips_found, ips_expected, "Nuovo host attivo (inatteso)", "Host mancante")
-
-
-#funzione che confronta le porte 
-def compare_ports(ip, details_found, details_expected):
-    ports_found    = set(details_found.get("ports", []))
-    ports_expected = set(details_expected.get("ports", []))
-    
-    new_ports = ports_found - ports_expected
-    missing_ports = ports_expected - ports_found
-    
-    diffs = False
-
-    if new_ports:
-        print(f"Nuove porte rilevate per {ip}: {sorted(new_ports)}")
-        diffs = True
-    if missing_ports:
-        print(f"Porte mancanti/chiuse per {ip}: {sorted(missing_ports)}")
-        diffs = True
-    return diffs
-
-
-#funzione per fare il confronto tra uno scan atteso (EXPECTED_JSON) e lo scan ottenuto con lo script (OUTPUT_JSON).
-#confronta: subnet presenti, host attivi per subnet, porte aperte per host, chiavi dei servizi (porta/protocollo)
+#funzione per fare il confronto tra uno scan atteso (scan_expected.json) e lo scan ottenuto con lo script (scan_results.json)
+#ritorna un elenco ordinato delle differenze
 def compare_scans():
     print("=============================================================")
     print("||           SCAN COMPARISON: Confronto iniziato           ||")
@@ -273,51 +213,86 @@ def compare_scans():
             print(f"Errore: file '{EXPECTED_JSON}' non valido.\n")
             return
 
+    differences_found = False #variabile booleana per catturare il rilevamento di differenze
+
     subnets_found = set(scan_data.keys())
     subnets_expected = set(expected_data.keys())
 
-    differences_found = compare_subnets(subnets_found, subnets_expected)
+    #considero l'unione di tutte le subnet
+    all_subnets = subnets_found.union(subnets_expected)
 
-    #analizza le subnet comuni (intersezioni dei set)
-    for sub in sorted(subnets_found.intersection(subnets_expected)):
-        map_ips_found = scan_data.get(sub, {})
+    for sub in sorted(all_subnets):
+        
+        if sub in subnets_found and sub not in subnets_expected:
+            print(f"Nuova subnet (inattesa): {sub}")
+            differences_found = True
+        elif sub in subnets_expected and sub not in subnets_found:
+            print(f"Subnet mancante: {sub}")
+            differences_found = True
+
+        #recupero da entrambe le strutture dati i dizionari di ip attivi
+        #se il get non trova nulla ritorniamo un dizionario vuoto per i set
+        map_ips_found = scan_data.get(sub, {}) 
         map_ips_expected = expected_data.get(sub, {})
-
+        
+        #creo degli insiemi di ip per gestire le sottrazioni
         ips_found = set(map_ips_found.keys())
         ips_expected = set(map_ips_expected.keys())
 
-        if compare_hosts(ips_found, ips_expected):
+        #eseguo le sottrazioni sugli insiemi di ip
+        new_ips = ips_found - ips_expected
+        missing_ips = ips_expected - ips_found
+
+        for ip in sorted(new_ips):
+            print(f"Nuovo host attivo (inatteso): {ip}")
+            differences_found = True
+        for ip in sorted(missing_ips):
+            print(f"Host mancante: {ip}")
             differences_found = True
 
-        #analizzo gli host comuni (intersezione dei set)
-        for ip in sorted(ips_found.intersection(ips_expected)):
-            if compare_ports(ip, map_ips_found[ip], map_ips_expected[ip]):
+        #confronto gli ip (solo quelli comuni ad entrambe le subnet per evitare stampe ovvie)
+        #se trovo un nuovo ip inatteso o un ip mancante diventa inutile confrontarlo con valori vuoti di porte e servizi
+        common_ips = ips_found.intersection(ips_expected)
+
+        for ip in sorted(common_ips):
+            #uso di nuovo le mappe di ip recuperate nel passo prima
+            map_details_found = map_ips_found[ip]
+            map_details_expected = map_ips_expected[ip]
+
+            #se non trova liste in corrispondenza di ports ritorna una lista vuota
+            ports_found = set(map_details_found.get("ports", []))
+            ports_expected = set(map_details_expected.get("ports", []))
+
+            new_ports = ports_found - ports_expected
+            missing_ports = ports_expected - ports_found
+
+            if new_ports:
+                print(f"Nuove porte rilevate per {ip}: {sorted(list(new_ports))}")
+                differences_found = True
+            if missing_ports:
+                print(f"Porte mancanti/chiuse per {ip}: {sorted(list(missing_ports))}")
                 differences_found = True
 
+    #se non ho trovato differenze faccio una stampa diversa
     if not differences_found:
         print("Confronto terminato: nessuna differenza rilevata. La rete corrisponde al report atteso.\n")
     else:
         print("Confronto terminato: rilevate differenze rispetto al risultato atteso.\n")
 
 
-#------------------------------------------------------------------------------------------------------------------#
 
-
-#funzione che salva il report dello scan generando file JSON
+#funzione che salva il report dello scan generando file JSON e YML
 def save_results():
 
-    scan_timestamp = datetime.now(ZoneInfo("Europe/Rome"))
-    scan_timestamp_str = scan_timestamp.strftime("%d%m%Y_%H%M%S")    # datetime string usata nel nome file di output
-    output_scan = f"scan_results_{scan_timestamp_str}.json"
-
-    with open(output_scan, "w") as json_file:
+    with open(OUTPUT_JSON, "w") as json_file:
         json.dump(scan_data, json_file, indent=4)
-    print(f"File JSON {output_scan} creato con successo!\n")
+    print(f"File JSON {OUTPUT_JSON} creato con successo!\n")
 
 
-#---------------------#
-#   main del codice   #
-#---------------------#
+
+#---------------------
+#   main del codice
+#---------------------
 network_discovery() #esegue la network discovery sui subnet target
 
 #verifica se viene trovato almeno un host in una qualsiasi subnet. any controlla che ci sia almeno un dizionario di ip non vuoto
