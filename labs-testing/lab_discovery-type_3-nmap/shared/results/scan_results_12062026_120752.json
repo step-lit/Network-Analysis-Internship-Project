@@ -1,0 +1,378 @@
+{
+    "110.0.0.0/24": {
+        "110.0.0.1": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.0.4": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.0.5": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "110.0.4.0/24": {
+        "110.0.4.2": {
+            "mac": "00:00:00:00:00:02",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.4.3": {
+            "mac": "00:00:00:00:00:03",
+            "os": "Linux 5.3 - 5.4 (100%)",
+            "ports": [
+                80
+            ],
+            "services": {
+                "80/tcp": {
+                    "description": "http: Apache httpd (2.4.66) (Debian)",
+                    "cpe": [
+                        "cpe:/a:apache:http_server:2.4.66"
+                    ],
+                    "vulnerabilities": [
+                        {
+                            "cve_id": "CVE-2007-4723",
+                            "cvss": 7.5,
+                            "summary": "Directory traversal vulnerability in Ragnarok Online Control Panel 4.3.4a, when the Apache HTTP Server is used, allows remote attackers to bypass authentication via directory traversal sequences in a URI that ends with the name of a publicly available page, as demonstrated by a \"/...../\" sequence and an account_manage.php/login.php final component for reaching the protected account_manage.php page.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2009-0796",
+                            "cvss": 2.6,
+                            "summary": "Cross-site scripting (XSS) vulnerability in Status.pm in Apache::Status and Apache2::Status in mod_perl1 and mod_perl2 for the Apache HTTP Server, when /perl-status is accessible, allows remote attackers to inject arbitrary web script or HTML via the URI.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2009-2299",
+                            "cvss": 5.0,
+                            "summary": "The Artofdefence Hyperguard Web Application Firewall (WAF) module before 2.5.5-11635, 3.0 before 3.0.3-11636, and 3.1 before 3.1.1-11637, a module for the Apache HTTP Server, allows remote attackers to cause a denial of service (memory consumption) via an HTTP request with a large Content-Length value but no POST data.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2011-1176",
+                            "cvss": 4.3,
+                            "summary": "The configuration merger in itk.c in the Steinar H. Gunderson mpm-itk Multi-Processing Module 2.2.11-01 and 2.2.11-02 for the Apache HTTP Server does not properly handle certain configuration sections that specify NiceValue but not AssignUserID, which might allow remote attackers to gain privileges by leveraging the root uid and root gid of an mpm-itk process.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2011-2688",
+                            "cvss": 7.5,
+                            "summary": "SQL injection vulnerability in mysql/mysql-auth.pl in the mod_authnz_external module 3.2.5 and earlier for the Apache HTTP Server allows remote attackers to execute arbitrary SQL commands via the user field.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2012-3526",
+                            "cvss": 5.0,
+                            "summary": "The reverse proxy add forward module (mod_rpaf) 0.5 and 0.6 for the Apache HTTP Server allows remote attackers to cause a denial of service (server or application crash) via multiple X-Forwarded-For headers in a request.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2012-4001",
+                            "cvss": 5.0,
+                            "summary": "The mod_pagespeed module before 0.10.22.6 for the Apache HTTP Server does not properly verify its host name, which allows remote attackers to trigger HTTP requests to arbitrary hosts via unspecified vectors, as demonstrated by requests to intranet servers.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2012-4360",
+                            "cvss": 4.3,
+                            "summary": "Cross-site scripting (XSS) vulnerability in the mod_pagespeed module 0.10.19.1 through 0.10.22.4 for the Apache HTTP Server allows remote attackers to inject arbitrary web script or HTML via unspecified vectors.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2013-0941",
+                            "cvss": 2.1,
+                            "summary": "EMC RSA Authentication API before 8.1 SP1, RSA Web Agent before 5.3.5 for Apache Web Server, RSA Web Agent before 5.3.5 for IIS, RSA PAM Agent before 7.0, and RSA Agent before 6.1.4 for Microsoft Windows use an improper encryption algorithm and a weak key for maintaining the stored data of the node secret for the SecurID Authentication API, which allows local users to obtain sensitive information via cryptographic attacks on this data.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2013-0942",
+                            "cvss": 4.3,
+                            "summary": "Cross-site scripting (XSS) vulnerability in EMC RSA Authentication Agent 7.1 before 7.1.1 for Web for Internet Information Services, and 7.1 before 7.1.1 for Web for Apache, allows remote attackers to inject arbitrary web script or HTML via unspecified vectors.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2013-2765",
+                            "cvss": 5.0,
+                            "summary": "The ModSecurity module before 2.7.4 for the Apache HTTP Server allows remote attackers to cause a denial of service (NULL pointer dereference, process crash, and disk consumption) via a POST request with a large body and a crafted Content-Type header.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2013-4365",
+                            "cvss": 7.5,
+                            "summary": "Heap-based buffer overflow in the fcgid_header_bucket_read function in fcgid_bucket.c in the mod_fcgid module before 2.3.9 for the Apache HTTP Server allows remote attackers to have an unspecified impact via unknown vectors.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-24072",
+                            "cvss": 8.8,
+                            "summary": "An escalation of privilege bug in various modules in Apache HTTP 2.4.66 and earlier allows local .htaccess authors to read files with the privileges of the httpd user.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes this issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34059",
+                            "cvss": 7.5,
+                            "summary": "Buffer Over-read vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33857",
+                            "cvss": 5.3,
+                            "summary": "Out-of-bounds Read vulnerability in mod_proxy_ajp of \n\nApache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34032",
+                            "cvss": 5.3,
+                            "summary": "Improper Null Termination, Out-of-bounds Read vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-23918",
+                            "cvss": 8.8,
+                            "summary": "Double Free and possible RCE vulnerability in Apache HTTP Server with the HTTP/2 protocol.\n\nThis issue affects Apache HTTP Server: 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29169",
+                            "cvss": 7.5,
+                            "summary": "A NULL pointer dereference in mod_dav_lock in Apache HTTP Server 2.4.66 and earlier may allow an attacker to crash the server with a malicious request.mod_dav_lock is not used internally by mod_dav or mod_dav_fs.\n\nThe only known use-case for mod_dav_lock was mod_dav_svn from Apache Subversion earlier than version 1.2.0.\n\nUsers are recommended to upgrade to version 2.4.66, which fixes this issue, or remove mod_dav_lock.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33006",
+                            "cvss": 4.8,
+                            "summary": "A timing attack against mod_auth_digest in Apache HTTP Server 2.4.66 allows a bypass of Digest authentication by a remote attacker.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes this issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33007",
+                            "cvss": 5.3,
+                            "summary": "A NULL pointer dereference in the mod_authn_socache in Apache HTTP Server 2.4.66 and earlier allows an unauthenticated remote user to crash a child process in a caching forward proxy configuration.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes this issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33523",
+                            "cvss": 6.5,
+                            "summary": "HTTP response splitting vulnerability in multiple Apache HTTP Server modules with untrusted or compromised backend servers.\n\nThis issue affects Apache HTTP Server: from through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29168",
+                            "cvss": 7.3,
+                            "summary": "Allocation of Resources Without Limits or Throttling vulnerability in Apache HTTP Server's\u00a0 mod_md via OCSP response data.\n\nThis issue affects Apache HTTP Server: from 2.4.30 through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-28780",
+                            "cvss": 9.8,
+                            "summary": "Heap-based Buffer Overflow vulnerability in mod_proxy_ajp of Apache HTTP Server.\nIf mod_proxy_ajp connects to a malicious AJP server this AJP server can send a malicious AJP message back to mod_proxy_ajp and cause it to write 4 attacker controlled bytes after the end of a heap based buffer.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29167",
+                            "cvss": 9.8,
+                            "summary": "Use After Free vulnerability in Apache HTTP Server with mod_ldap in per-directory configuration\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29170",
+                            "cvss": 6.1,
+                            "summary": "A cross-site scripting vulnerability exists in mod_proxy_ftp's HTML directory list generation in Apache HTTP Server 2.4.67 and earlier when listing FTP directory contents either via forward or reverse proxy configuration.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34355",
+                            "cvss": 7.5,
+                            "summary": "A buffer overflow in mod_proxy_html in Apache HTTP Server 2.4.67 and earlier allows an attack by an untrusted backend.\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34356",
+                            "cvss": 7.5,
+                            "summary": "Heap-based Buffer Overflow vulnerability in Apache HTTP Server with malicious backend servers and ProxyPassReverseCookie*\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-42535",
+                            "cvss": 9.1,
+                            "summary": "A path handling issue in mod_dav_fs in Apache 2.4.67 and earlier\u00a0allows a WebDAV content author to directly manipulate trusted DAV property databases, potentially causing child process crashes.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-42536",
+                            "cvss": 7.5,
+                            "summary": "Heap-based Buffer Overflow vulnerability in Apache HTTP Server with\u00a0mod_xml2enc, xml2StartParse, and untrusted content\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-43951",
+                            "cvss": 6.5,
+                            "summary": "Out-of-bounds Read vulnerability in Apache HTTP Server with mod_headers and mod_mime and multiple response languages.\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44119",
+                            "cvss": 5.5,
+                            "summary": "Improper Privilege Management vulnerability in Apache HTTP Server 2.4.67 and earlier allows local .htaccess authors to read files with the privileges of the httpd user.\n\nThis issue affects Apache HTTP Server: from through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44185",
+                            "cvss": 7.3,
+                            "summary": "Buffer Over-read vulnerability in Apache HTTP Server via outbound OCSP requests to an attacker controlled OCSP server\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44186",
+                            "cvss": 7.3,
+                            "summary": "Loop with Unreachable Exit Condition ('Infinite Loop') vulnerability in the mod_proxy_ftp module in Apache HTTP Server with an attacker controlled backend FTP server.\n\nThis issue affects undefined: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44631",
+                            "cvss": 9.8,
+                            "summary": "Buffer Underwrite vulnerability in Apache HTTP Server on crafted regular expressions in the configuration.\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-48913",
+                            "cvss": 7.3,
+                            "summary": "Use After Free vulnerability in Apache HTTP Server module mod_http2 when file handles are already exhausted.\n\nThis issue affects Apache HTTP Server: from 2.4.55 through 2.4.67.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-49975",
+                            "cvss": 7.5,
+                            "summary": "Memory Allocation with Excessive Size Value vulnerability in Apache HTTP Server's mod_http leads to denial of service via malicious HTTP requests.\n\nThis issue affects Apache HTTP Server: from 2.4.17 through 2.4.67.",
+                            "matched_cpe": "cpe:/a:apache:http_server:2.4.66"
+                        }
+                    ]
+                }
+            }
+        },
+        "110.0.4.4": {
+            "mac": "00:00:00:00:00:C1",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.4.1": {
+            "mac": "localhost",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "210.0.3.0/24": {
+        "210.0.3.2": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "210.0.3.6": {
+            "mac": "null",
+            "os": "Linux 5.3 - 5.4 (100%)",
+            "ports": [
+                8080
+            ],
+            "services": {
+                "8080/tcp": {
+                    "description": "http: Jetty (9.4.27.v20200227)",
+                    "cpe": [
+                        "cpe:/a:mortbay:jetty:9.4.27.v20200227"
+                    ],
+                    "vulnerabilities": []
+                }
+            }
+        },
+        "210.0.3.7": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "210.0.3.8": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "10.0.1.0/30": {
+        "10.0.1.1": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "10.0.1.2": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "10.0.0.0/30": {
+        "10.0.0.1": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "10.0.0.2": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "210.0.4.0/24": {
+        "210.0.4.3": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "210.0.4.9": {
+            "mac": "null",
+            "os": "Linux 3.1 (95%) | Linux 3.2 (95%) | AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%) | ASUS RT-N56U WAP (Linux 3.4) (93%) | Linux 3.16 (93%)",
+            "ports": [
+                53
+            ],
+            "services": {
+                "53/tcp": {
+                    "description": "domain: ISC BIND (9.18.44-1~deb12u1) Debian Linux",
+                    "cpe": [
+                        "cpe:/a:isc:bind:9.18.44-1~deb12u1",
+                        "cpe:/o:linux:linux_kernel"
+                    ],
+                    "vulnerabilities": []
+                },
+                "53/udp": {
+                    "description": "domain: ISC BIND (9.18.44-1~deb12u1) Debian Linux",
+                    "cpe": [
+                        "cpe:/a:isc:bind:9.18.44-1~deb12u1",
+                        "cpe:/o:linux:linux_kernel"
+                    ],
+                    "vulnerabilities": []
+                }
+            }
+        },
+        "210.0.4.10": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    }
+}

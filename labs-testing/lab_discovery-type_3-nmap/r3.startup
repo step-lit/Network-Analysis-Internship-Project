@@ -4,3 +4,5 @@ ip route add 210.0.3.0/24 via 10.0.0.1 dev eth1
 ip route add 10.0.1.0/30 via 10.0.0.1 dev eth1
 ip route add 110.0.0.0/24 via 10.0.0.1 dev eth1
 ip route add 110.0.4.0/24 via 10.0.0.1 dev eth1
+
+ip route add default via 10.0.0.1 dev eth1

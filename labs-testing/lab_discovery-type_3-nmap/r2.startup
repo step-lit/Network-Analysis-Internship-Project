@@ -4,3 +4,5 @@ ip address add 10.0.0.1/30 dev eth2
 ip route add 110.0.0.0/24 via 10.0.1.1 dev eth1
 ip route add 110.0.4.0/24 via 10.0.1.1 dev eth1
 ip route add 210.0.4.0/24 via 10.0.0.2 dev eth2
+
+iptables -t nat -A POSTROUTING -o eth3 -j MASQUERADE
