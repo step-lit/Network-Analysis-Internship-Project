@@ -1,9 +1,9 @@
-FROM kathara/base
+FROM vulhub/cups-browsed:2.0.1
 
+# I tuoi strumenti di rete e diagnostica
 RUN apt-get update && apt-get install -y \
-    nmap \
+    iproute2 \
     procps \
     tcpdump \
     htop \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

@@ -1,2 +1,11 @@
 ip address add 110.0.0.5/25 dev eth0
 ip route add default via 110.0.0.1 dev eth0
+
+#Starts SSH
+/etc/init.d/ssh start
+
+#Starts Telnet
+/etc/init.d/openbsd-inetd start
+
+#Starts FTP
+/etc/init.d/vsftpd start

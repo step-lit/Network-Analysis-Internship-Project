@@ -5,7 +5,7 @@ analysis activities. If present in the test lab's shared directory, the script a
 a .json file to compare the results with the expected scan output.
 """
 __author__ = "Stefano Strambi"
-__version__ = "1.3.1"
+__version__ = "1.3.2"
 
 
 
@@ -17,6 +17,7 @@ import time
 import requests
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from dotenv import load_dotenv
 
 # List of target subnets to scan, defined as strings in CIDR notation (Ipv4 subnet format: "x.x.x.x/x")
 TARGET_SUBNETS = []
@@ -26,6 +27,19 @@ EXPECTED_JSON = "scan_expected.json"
 # Absolute path of the directory containing this script
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(SCRIPT_DIR, "results")
+
+# Load environment variables from the .env file in the script directory
+load_dotenv(os.path.join(SCRIPT_DIR, ".env"))
+
+# API key required for high-rate requests to the database
+# Fetch the NIST API key from env variables (defaults to empty string if missing)
+NIST_API_KEY = os.environ.get("NIST_API_KEY", "")
+
+# Verify if the API key was successfully loaded and notify the user
+if NIST_API_KEY:
+    print("\nAPI key successfully loaded for the NVD database scan.\n")
+else:
+    print("\nWarning: No API key found. NVD database scan will operate under stricter rate limits.\n")
 
 
 # Multi-layered dictionary that stores the network discovery results.
@@ -189,7 +203,7 @@ def process_ports(host_data, details_map):
 def process_os(host_data, details_map):
     """
     This function processes OS fingerprinting for a single host.
-    Directly updates details_map with the "os" key and ollects all the OS matches
+    Directly updates details_map with the "os" key and collects all the OS matches
     with accuracy >= best_accuracy - tolerance.
 
     Parameters:
@@ -211,7 +225,6 @@ def process_os(host_data, details_map):
 
     # Collect matches within the tolerance range
     top_matches = [m for m in os_matches if int(m.get("accuracy", "0")) >= min_accepted_accuracy]
-
                 
     # Create a string listing the OS options and their associated accuracy
     os_details_list = []
@@ -296,8 +309,13 @@ def cpe_conversion(cpe):
     # In these cases, we preserve them as they are.
     if len(parts) > 3 and parts[3] not in ("*", "-", ""):
         version = parts[3]
+
+        # Split at the hyphen (-) ONLY if it is immediately followed by one or more digits (e.g., -1, -2).
+        # If it encounters a tilde (~) or a plus sign (+), always split and discard everything after.
+        version_clean = re.split(r'-(?=[0-9]+)|[~+]', version)[0]
         
-        match = re.match(r'^([0-9]+(?:\.[0-9]+)*[a-zA-Z]?)', version)
+        # Final alphanumeric validation: match the core version pattern and any trailing letters/digits.
+        match = re.match(r'^([0-9]+(?:\.[0-9]+)*[a-zA-Z0-9-]*)', version_clean)
         if match:
             parts[3] = match.group(1)
     
@@ -308,29 +326,190 @@ def cpe_conversion(cpe):
 
 
 
+def get_primary_or_first_metric(metric_list):
+    """
+    This function iterates through a list of CVSS metrics returned by the NVD API and extracts 
+    the most accurate evaluation block, prioritizing the official NIST assessment.
+
+    Parameters: 
+      - metric_list (list): list of dict containing CVSS metrics.
+
+    Returns:
+      - Returns the metric dictionary marked with "type": "Primary" if found.
+      - Returns the first metric dictionary (metric_list[0]) as a fallback 
+        if no "Primary" authority is explicitly present.
+      - Returns None if the provided metric_list is empty, evaluates to False, 
+        or is not a valid list instance.
+    """
+    if not metric_list or not isinstance(metric_list, list):
+        return None
+        
+    for metric in metric_list:
+        if metric.get("type") == "Primary":
+            return metric
+            
+    return metric_list[0]
+
+
+
+def extract_cvss_metrics(metrics_dict):
+    """
+    This function parses the NVD metrics dictionary to extract the highest available CVSS score and severity.
+    Prioritizes newer versions (V4.0 -> V3.1 -> V3.0 -> V2) and 'Primary' metrics.
+
+    Parameters:
+      - metrics_dict (dict): The "metrics" block from an NVD CVE item.
+
+    Returns:
+        tuple: A (cvss_score, cvss_severity, cvss_vector) tuple. Defaults to ("N/A", "N/A").
+    """
+    cvss_score = "N/A"
+    cvss_severity = "N/A"
+    cvss_vector = "N/A"
+    
+    if "cvssMetricV40" in metrics_dict:
+        target_metric = get_primary_or_first_metric(metrics_dict["cvssMetricV40"])
+        if target_metric:
+            cvss_data_obj = target_metric.get("cvssData", {})
+            cvss_score = cvss_data_obj.get("baseScore", "N/A")
+            cvss_severity = cvss_data_obj.get("baseSeverity", "N/A")
+            cvss_vector   = cvss_data_obj.get("vectorString", "N/A")
+            
+    elif "cvssMetricV31" in metrics_dict:
+        target_metric = get_primary_or_first_metric(metrics_dict["cvssMetricV31"])
+        if target_metric:
+            cvss_data_obj = target_metric.get("cvssData", {})
+            cvss_score = cvss_data_obj.get("baseScore", "N/A")
+            cvss_severity = cvss_data_obj.get("baseSeverity", "N/A")
+            cvss_vector   = cvss_data_obj.get("vectorString", "N/A")
+            
+    elif "cvssMetricV30" in metrics_dict:
+        target_metric = get_primary_or_first_metric(metrics_dict["cvssMetricV30"])
+        if target_metric:
+            cvss_data_obj = target_metric.get("cvssData", {})
+            cvss_score = cvss_data_obj.get("baseScore", "N/A")
+            cvss_severity = cvss_data_obj.get("baseSeverity", "N/A")
+            cvss_vector   = cvss_data_obj.get("vectorString", "N/A")
+            
+    elif "cvssMetricV2" in metrics_dict:
+        target_metric = get_primary_or_first_metric(metrics_dict["cvssMetricV2"])
+        if target_metric:
+            cvss_data_obj = target_metric.get("cvssData", {})
+            cvss_score = cvss_data_obj.get("baseScore", "N/A")
+            cvss_severity = target_metric.get("baseSeverity", "N/A")
+            cvss_vector   = cvss_data_obj.get("vectorString", "N/A")
+            
+    return cvss_score, cvss_severity, cvss_vector
+
+
+
+def extract_cve_references(references_raw):
+    """
+    This function extracts all available reference links from NVD references
+    as a list of objects containing the url and its associated tags.
+    Duplicates are removed based on URL.
+
+    Parameters:
+      - references_raw (list): Raw list of reference dictionaries from NVD.
+
+    Returns:
+        list: A list of dicts, each with "url" (str) and "tags" (list of str).
+    """
+    if not references_raw:
+        return []
+
+    seen_urls = set()
+    result = []
+
+    for ref in references_raw:
+        url = ref.get("url")
+        if not url or url in seen_urls:
+            continue
+
+        tags = ref.get("tags", [])
+        result.append({"url": url, "tags": tags})
+        seen_urls.add(url)
+
+    return result
+
+
+
+def get_nist_api_data(url, headers, port_protocol):
+    """
+    This function executes GET requests (up to max_retries times) to the NIST NVD API.
+    Handles network timeouts and server overload errors (429, 503, 504) by 
+    implementing an Exponential Backoff retry mechanism.
+    
+    Parameters:
+      - url (str): The full API query URL.
+      - headers (dict): HTTP headers including the optional NIST API key.
+      - port_protocol (str): The identifier of the active service (e.g., '22/tcp').
+        
+    Returns:
+        dict or None: dictionary on success, None if the request fails after all retries
+    """
+    max_retries = 5   # Maximum number of retries attempts
+    backoff_time = 3  # Initial delay in seconds before the first retry
+    
+    for attempt in range(max_retries):
+        try:
+            # HTTP GET request to the NIST NVD API
+            # timeout=(10, 60): 10s to establish connection, 60s to wait for server response data
+            response = requests.get(url, headers=headers, timeout=(10,60))
+            
+            # If request was successful return parsed JSON payload immediately
+            if response.status_code == 200:
+                return response.json()
+            
+            # Handle Too Many Requests (429), Service Unavailable (503) and Gateway Timeout (504) status codes
+            elif response.status_code in (429, 503, 504):
+                print(f"      [Attempt {attempt+1}/{max_retries}] NIST API request status code: ({response.status_code}) for {port_protocol}. Retrying in {backoff_time}s...")
+                time.sleep(backoff_time)
+                backoff_time *= 2  # Double the wait time for the next attempt
+                continue
+            # Handle permanent errors
+            else:
+                print(f"      An error occurred while querying the NIST database for {port_protocol}. Status code: {response.status_code}")
+                return None
+                
+        # Handle network layer issues
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+            print(f"      [Attempt {attempt+1}/{max_retries}] Network timeout/connection issue for {port_protocol}. Retrying in {backoff_time}s...")
+            time.sleep(backoff_time)
+            backoff_time *= 2  # Double the wait time for the next attempt
+            if attempt == max_retries - 1:
+                print(f"      Failed to complete request for {port_protocol} after {max_retries} retries: {e}")
+                return None
+        
+        # Handle unexpected software exceptions
+        except Exception as e:
+            print(f"      Critical unexpected error for {port_protocol}: {e}")
+            return None
+    
+    print(f"      Error: Failed to obtain a valid response from the GET request for {port_protocol} after {max_retries} attempts.")
+    return None
+
+
+
 def cve_scan(ip, details_map):
     """
     This function queries the official NIST (NVD) database using the CPE list of the host's active services.
-    Requires an API key for faster rate-limited requests to the database.
+    Requires a 'NIST_API_KEY' saved in the local .env file for faster rate-limited requests to the database.
 
     Parameters:
       - ip (str): The IP address of the target host;
       - details_map (dict): The dictionary containing the host's details, specifically the "services" key with its associated CPEs.
     """
-    
     services = details_map.get("services", {})
 
     # Skip CVE scan if no services are available
     if not services:
         return
-
-    # API key required for high-rate requests to the database
-    NIST_API_KEY = ""
     
     # Adjust timers and headers based on API key availability
     if NIST_API_KEY:
         headers = {"apiKey": NIST_API_KEY}
-        sleep_time = 1
+        sleep_time = 3
         print(f"   -> Querying official NIST database (Fast mode - API Key enabled) for {ip}...")
     else:
         headers = {}
@@ -358,67 +537,56 @@ def cve_scan(ip, details_map):
 
             url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?virtualMatchString={cpe_converted}"
             
-            try:
-                response = requests.get(url, headers=headers, timeout=10)
-                
-                # If the request is successful...
-                if response.status_code == 200:
-                    data = response.json()
-                    vulnerabilities_list = data.get("vulnerabilities", [])
-                    
-                    # If vulnerabilities are found...
-                    if vulnerabilities_list:
-                        print(f"      Detected {len(vulnerabilities_list)} vulnerabilities for '{cpe_converted}' ({port_protocol})!")
-                        
-                        for item in vulnerabilities_list:
-                            cve_data = item.get("cve", {})
-                            cve_id = cve_data.get("id")
-                            
-                            # Extract the English description
-                            descriptions = cve_data.get("descriptions", [])
-                            cve_desc = "N/A"
-                            for desc in descriptions:
-                                if desc.get("lang") == "en":
-                                    cve_desc = desc.get("value")
-                                    break
-                            
-                            # Extract CVSS score
-                            metrics = cve_data.get("metrics", {})
-                            cvss_score = "N/A"
-                            
-                            # A single CVE can contain multiple scoring versions:
-                            # Using an if/elif structure ensures that only the highest/most modern 
-                            # available metric is assigned, preventing older scores from overwriting it
-                            if "cvssMetricV40" in metrics:
-                                cvss_score = metrics["cvssMetricV40"][0].get("cvssData", {}).get("baseScore", "N/A")
-                            elif "cvssMetricV31" in metrics:
-                                cvss_score = metrics["cvssMetricV31"][0].get("cvssData", {}).get("baseScore", "N/A")
-                            elif "cvssMetricV30" in metrics:
-                                cvss_score = metrics["cvssMetricV30"][0].get("cvssData", {}).get("baseScore", "N/A")
-                            elif "cvssMetricV2" in metrics:
-                                cvss_score = metrics["cvssMetricV2"][0].get("cvssData", {}).get("baseScore", "N/A")
-
-                            # Build the CVE details dictionary and append it
-                            cve_info = {
-                                "cve_id": cve_id,
-                                "cvss": cvss_score,
-                                "summary": cve_desc,
-                                "matched_cpe": cpe_converted 
-                            }
-                            service_data["vulnerabilities"].append(cve_info)
-                    
-                    else:
-                        print(f"      No CVE detected for '{cpe_converted}' ({port_protocol}).")
-
-                else:
-                    print(f"      An error occurred while querying the NIST database. Status code: {response.status_code}")
+            # Delegate network logic to our clean simplified helper function
+            data = get_nist_api_data(url, headers, port_protocol)
             
-            # Handles exceptions if the request fails
-            except Exception as e:
-                print(f"      Failed to complete request for {port_protocol}: {e}")
+            if data is not None:
+                vulnerabilities_list = data.get("vulnerabilities", [])
+                
+                # If vulnerabilities are found...
+                if vulnerabilities_list:
+                    print(f"      Detected {len(vulnerabilities_list)} vulnerabilities for '{cpe_converted}' ({port_protocol})!")
+                    
+                    for item in vulnerabilities_list:
+                        cve_data = item.get("cve", {})
+                        cve_id = cve_data.get("id")
+                        
+                        # Extract the English description
+                        descriptions = cve_data.get("descriptions", [])
+                        cve_desc = "N/A"
+                        for desc in descriptions:
+                            if desc.get("lang") == "en":
+                                cve_desc = desc.get("value")
+                                break
+                        
+                        # Extract CVSS score and severity using extracted helper function
+                        cvss_score, cvss_severity, cvss_vector = extract_cvss_metrics(cve_data.get("metrics", {}))
+
+                        # Extract and prioritize references for the specific CVE using flowchart helper function
+                        final_references = extract_cve_references(cve_data.get("references", []))
+
+                        # NIST url link to the specific CVE
+                        nist_link = f"https://nvd.nist.gov/vuln/detail/{cve_id}"
+
+                        # Build the CVE details dictionary and append it
+                        cve_info = {
+                            "cve_id": cve_id,
+                            "cvss": cvss_score,
+                            "cvss_vendor": cvss_vector,
+                            "severity": cvss_severity,
+                            "summary": cve_desc,
+                            "matched_cpe": cpe_converted,
+                            "nist_link": nist_link,
+                            "references": final_references
+                        }
+                        service_data["vulnerabilities"].append(cve_info)
+                else:
+                    print(f"      No CVE detected for '{cpe_converted}' ({port_protocol}).")
                 
             # Rate limiting compliance based on NIST guidelines
             time.sleep(sleep_time)
+    
+    print(f"      CVE scan phase completed for {ip}.\n")
 
 
 #------------------------------------------------------------------------------------------------------------------#
@@ -443,7 +611,7 @@ def check_diffs(set_a, set_b, msg_new, msg_missing):
     new_items = set_a - set_b
     missing_items = set_b - set_a
 
-    # If both sets match and have no differences
+    # If both sets are empty: no data to compare, no differences
     if not set_a and not set_b:
         return False
     
@@ -460,9 +628,9 @@ def compare_subnets(subnets_found, subnets_expected):
     """
     This function compares discovered subnets against the expected ones using check_diffs.
 
-    Args:
-        subnets_found (set): Set of subnets identified during the discovery phase.
-        subnets_expected (set): Set of subnets expected from the template configuration.
+    Parameters:
+      - subnets_found (set): Set of subnets identified during the discovery phase.
+      - subnets_expected (set): Set of subnets expected from the template configuration.
 
     Returns:
         bool: True if subnet differences are found, False otherwise.
@@ -476,9 +644,9 @@ def compare_hosts(ips_found, ips_expected):
     """
     This function compares discovered active host IPs against the expected ones using check_diffs.
 
-    Args:
-        ips_found (set): Set of active host IPs found in a specific subnet.
-        ips_expected (set): Set of expected host IPs for that subnet.
+    Parameters:
+      - ips_found (set): Set of active host IPs found in a specific subnet.
+      - ips_expected (set): Set of expected host IPs for that subnet.
 
     Returns:
         bool: True if host differences are found, False otherwise.
@@ -492,10 +660,10 @@ def compare_ports(ip, details_found, details_expected):
     """
     This function compares the discovered open ports against the expected ports for a specific host IP.
 
-    Args:
-        ip (str): The IP address of the host being compared.
-        details_found (dict): Discovered details dictionary containing the "ports" key.
-        details_expected (dict): Expected details dictionary containing the "ports" key.
+    Parameters:
+      - ip (str): The IP address of the host being compared.
+      - details_found (dict): Discovered details dictionary containing the "ports" key.
+      - details_expected (dict): Expected details dictionary containing the "ports" key.
 
     Returns:
         bool: True if port differences (new or missing) are detected, False otherwise.
@@ -574,7 +742,6 @@ def compare_scans():
 #------------------------------------------------------------------------------------------------------------------#
 
 
-# This function saves the scan report by generating a JSON file
 def save_results():
     """
     This function saves the entire scan_data structure into a timestamped JSON file inside the results directory.
@@ -592,6 +759,7 @@ def save_results():
         json.dump(scan_data, json_file, indent=4)
 
     # Grants current user ownership to the generated file
+    # Parameters: output file, uid, gid (1000 is assigned to the first real Linux user, change them accordingly to your ids)
     os.chown(output_scan, 1000, 1000) 
 
     print(f"JSON file {output_scan} successfully created!\n")
@@ -604,9 +772,9 @@ network_discovery() # Executes network discovery on target subnets
 
 # Verifies if at least one host is found in any subnet.
 # 'any' checks if there is at least one non-empty IP dictionary.
-host_trovati = any(scan_data[subnet] for subnet in scan_data)
+hosts_found = any(scan_data[subnet] for subnet in scan_data)
 
-if host_trovati:
+if hosts_found:
     port_scanning()
     save_results()
     compare_scans()

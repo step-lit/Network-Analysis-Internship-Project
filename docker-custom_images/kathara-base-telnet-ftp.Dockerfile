@@ -1,9 +1,7 @@
 FROM kathara/base
 
 RUN apt-get update && apt-get install -y \
-    nmap \
-    procps \
-    tcpdump \
-    htop \
-    && apt-get clean \
+    telnetd \
+    openbsd-inetd \
+    vsftpd \
     && rm -rf /var/lib/apt/lists/*

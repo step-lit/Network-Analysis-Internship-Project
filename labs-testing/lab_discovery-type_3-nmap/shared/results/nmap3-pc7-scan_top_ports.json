@@ -1,0 +1,91 @@
+{
+    "210.0.3.7": {
+        "osmatch": [
+            {
+                "name": "Linux 5.3 - 5.4",
+                "accuracy": "100",
+                "line": "68140",
+                "osclass": {
+                    "type": "general purpose",
+                    "vendor": "Linux",
+                    "osfamily": "Linux",
+                    "osgen": "5.X",
+                    "accuracy": "100"
+                },
+                "cpe": "cpe:/o:linux:linux_kernel:5"
+            }
+        ],
+        "ports": [
+            {
+                "protocol": "tcp",
+                "portid": "53",
+                "state": "open",
+                "reason": "syn-ack",
+                "reason_ttl": "62",
+                "service": {
+                    "name": "tcpwrapped",
+                    "method": "probed",
+                    "conf": "8"
+                },
+                "cpe": [],
+                "scripts": []
+            }
+        ],
+        "hostname": [],
+        "macaddress": null,
+        "state": {
+            "state": "up",
+            "reason": "echo-reply",
+            "reason_ttl": "62"
+        }
+    },
+    "runtime": {
+        "time": "1781696825",
+        "timestr": "Wed Jun 17 11:47:05 2026",
+        "summary": "Nmap done at Wed Jun 17 11:47:05 2026; 1 IP address (1 host up) scanned in 101.97 seconds",
+        "elapsed": "101.97",
+        "exit": "success"
+    },
+    "stats": {
+        "scanner": "nmap",
+        "args": "/usr/bin/nmap -v -oX - --top-ports 1000 -sS -sU -sV -O --open -T4 --max-retries 1 --min-rate 1000 210.0.3.7",
+        "start": "1781696723",
+        "startstr": "Wed Jun 17 11:45:23 2026",
+        "version": "7.93",
+        "xmloutputversion": "1.05"
+    },
+    "task_results": [
+        {
+            "task": "Ping Scan",
+            "time": "1781696723",
+            "extrainfo": "1 total hosts"
+        },
+        {
+            "task": "Parallel DNS resolution of 1 host.",
+            "time": "1781696724"
+        },
+        {
+            "task": "SYN Stealth Scan",
+            "time": "1781696724",
+            "extrainfo": "1000 total ports"
+        },
+        {
+            "task": "UDP Scan",
+            "time": "1781696725",
+            "extrainfo": "1000 total ports"
+        },
+        {
+            "task": "Service scan",
+            "time": "1781696822",
+            "extrainfo": "76 services on 1 host"
+        },
+        {
+            "task": "NSE",
+            "time": "1781696824"
+        },
+        {
+            "task": "NSE",
+            "time": "1781696825"
+        }
+    ]
+}

@@ -1,2 +1,4 @@
 ip address add 210.0.3.8/24 dev eth0
 ip route add default via 210.0.3.2 dev eth0
+
+/etc/init.d/postgresql start

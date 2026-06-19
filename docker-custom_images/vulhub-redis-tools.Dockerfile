@@ -1,9 +1,9 @@
-FROM kathara/base
+FROM vulhub/redis:5.0.7
 
+# I tuoi strumenti di rete e diagnostica
 RUN apt-get update && apt-get install -y \
-    nmap \
+    iproute2 \
     procps \
     tcpdump \
     htop \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

@@ -1,0 +1,466 @@
+{
+    "110.0.0.0/24": {
+        "110.0.0.1": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.0.4": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.0.5": {
+            "mac": "null",
+            "os": "Linux 5.3 - 5.4 (99%)",
+            "ports": [
+                631
+            ],
+            "services": {
+                "631/tcp": {
+                    "description": "ipp: CUPS (2.4)",
+                    "cpe": [
+                        "cpe:/a:apple:cups:2.4"
+                    ],
+                    "vulnerabilities": [
+                        {
+                            "cve_id": "CVE-2022-26691",
+                            "cvss": 6.7,
+                            "summary": "A logic issue was addressed with improved state management. This issue is fixed in Security Update 2022-003 Catalina, macOS Monterey 12.3, macOS Big Sur 11.6.5. An application may be able to gain elevated privileges.",
+                            "matched_cpe": "cpe:2.3:a:apple:cups:2.4"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "110.0.4.0/24": {
+        "110.0.4.2": {
+            "mac": "00:00:00:00:00:02",
+            "os": "Linux 5.3 - 5.4 (100%)",
+            "ports": [
+                4000,
+                8080
+            ],
+            "services": {
+                "4000/tcp": {
+                    "description": "remoteanything",
+                    "cpe": [],
+                    "vulnerabilities": []
+                },
+                "8080/tcp": {
+                    "description": "http: Apache Tomcat (9.0.116)",
+                    "cpe": [
+                        "cpe:/a:apache:tomcat:9.0.116"
+                    ],
+                    "vulnerabilities": [
+                        {
+                            "cve_id": "CVE-2026-34483",
+                            "cvss": 7.5,
+                            "summary": "Improper Encoding or Escaping of Output vulnerability in the JsonAccessLogValve component of Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.20, from 10.1.0-M1 through 10.1.53, from 9.0.40 through 9.0.116.\n\nUsers are recommended to upgrade to version 11.0.21, 10.1.54 or 9.0.117 , which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34486",
+                            "cvss": 7.5,
+                            "summary": "Missing Encryption of Sensitive Data vulnerability in Apache Tomcat due to the\u00a0fix for CVE-2026-29146 allowing the bypass of the EncryptInterceptor.\n\nThis issue affects Apache Tomcat: 11.0.20, 10.1.53, 9.0.116.\n\nUsers are recommended to upgrade to version 11.0.21, 10.1.54 or 9.0.117, which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34487",
+                            "cvss": 7.5,
+                            "summary": "Insertion of Sensitive Information into Log File vulnerability in the cloud membership for clustering component of Apache Tomcat exposed the Kubernetes bearer token.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.20, from 10.1.0-M1 through 10.1.53, from 9.0.13 through 9.0.116.\n\nUsers are recommended to upgrade to version 11.0.21, 10.1.54 or 9.0.117, which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34500",
+                            "cvss": 6.5,
+                            "summary": "CLIENT_CERT authentication does not fail as expected for some scenarios when soft fail is disabled and FFM is used in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M14 through 11.0.20, from 10.1.22 through 10.1.53, from 9.0.92 through 9.0.116.\n\nUsers are recommended to upgrade to version 11.0.21, 10.1.54 or 9.0.117, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-41284",
+                            "cvss": 7.5,
+                            "summary": "Allocation of Resources Without Limits or Throttling vulnerability in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.0.M1 through 9.0.117.\nOlder, unsupported versions may also be affected.\n\nUsers are recommended to upgrade to version [FIXED_VERSION], which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-41293",
+                            "cvss": 9.8,
+                            "summary": "Improper Input Validation vulnerability in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.0.M1 through 9.0.117, from 10.0.0-M1 through 10.0.27.\nOlder, end of support versions may also be affected.\n\nUsers are recommended to upgrade to version [FIXED_VERSION], which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-42498",
+                            "cvss": 7.3,
+                            "summary": "Exposure of HTTP Authentication Header to unexpected hosts during WebSocket authentication vulnerability in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.2 through 9.0.117, from 8.5.24 through 8.5.100, from 7.0.83 through 7.0.109.\n\nUsers are recommended to upgrade to version 11.0.22, 10.1.55 or 9.0.118, which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-43512",
+                            "cvss": 9.8,
+                            "summary": "DEPRECATED: Authentication Bypass Issues vulnerability in digest authentication in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.0.M1 through 9.0.117, from 8.5.0 through 8.5.100, from before 7.0.0.\nOlder unsupported versions any also be affect\n\nUsers are recommended to upgrade to version 11.0.22, 10.1.55 or 9.0.118 which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-43513",
+                            "cvss": 7.5,
+                            "summary": "Improper Handling of Case Sensitivity vulnerability in LockOutRealm in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.0.M1 through 9.0.117, from 8.5.0 through 8.5.100, from 7.0.0 through 7.0.109.\nOlder unsupported versions may also be affected.\n\nUsers are recommended to upgrade to version 11.0.22, 10.1.55 or 9.0.118 which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-43514",
+                            "cvss": 3.7,
+                            "summary": "Observable Timing Discrepancy vulnerability\u00a0when comparing AJP secret in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.0.M1 through 9.0.117, from 8.5.0 through 8.5.100, from 7.0.0 through 7.0.109.\nOlder unsupported versions may also be affected.\n\nUsers are recommended to upgrade to version 11.0.22, 10.1.55 or 9.0.118 which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        },
+                        {
+                            "cve_id": "CVE-2026-43515",
+                            "cvss": 9.1,
+                            "summary": "Improper Authorization vulnerability when multiple method constraints define an HTTP method for the same extension in Apache Tomcat.\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.21, from 10.1.0-M1 through 10.1.54, from 9.0.0.M1 through 9.0.117, from 8.5.0 through 8.5.100, from 7.0.0 through 7.0.109.\n\nUsers are recommended to upgrade to version 11.0.22, 10.1.55 or 9.0.118 which fix the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:tomcat:9.0.116"
+                        }
+                    ]
+                }
+            }
+        },
+        "110.0.4.3": {
+            "mac": "00:00:00:00:00:03",
+            "os": "Linux 5.3 - 5.4 (100%)",
+            "ports": [
+                80
+            ],
+            "services": {
+                "80/tcp": {
+                    "description": "http: Apache httpd (2.4.66) (Debian)",
+                    "cpe": [
+                        "cpe:/a:apache:http_server:2.4.66"
+                    ],
+                    "vulnerabilities": [
+                        {
+                            "cve_id": "CVE-2026-24072",
+                            "cvss": 8.8,
+                            "summary": "An escalation of privilege bug in various modules in Apache HTTP 2.4.66 and earlier allows local .htaccess authors to read files with the privileges of the httpd user.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes this issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34059",
+                            "cvss": 7.5,
+                            "summary": "Buffer Over-read vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33857",
+                            "cvss": 5.3,
+                            "summary": "Out-of-bounds Read vulnerability in mod_proxy_ajp of \n\nApache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34032",
+                            "cvss": 5.3,
+                            "summary": "Improper Null Termination, Out-of-bounds Read vulnerability in Apache HTTP Server.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-23918",
+                            "cvss": 8.8,
+                            "summary": "Double Free and possible RCE vulnerability in Apache HTTP Server with the HTTP/2 protocol.\n\nThis issue affects Apache HTTP Server: 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29169",
+                            "cvss": 7.5,
+                            "summary": "A NULL pointer dereference in mod_dav_lock in Apache HTTP Server 2.4.66 and earlier may allow an attacker to crash the server with a malicious request.mod_dav_lock is not used internally by mod_dav or mod_dav_fs.\n\nThe only known use-case for mod_dav_lock was mod_dav_svn from Apache Subversion earlier than version 1.2.0.\n\nUsers are recommended to upgrade to version 2.4.66, which fixes this issue, or remove mod_dav_lock.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33006",
+                            "cvss": 4.8,
+                            "summary": "A timing attack against mod_auth_digest in Apache HTTP Server 2.4.66 allows a bypass of Digest authentication by a remote attacker.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes this issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33007",
+                            "cvss": 5.3,
+                            "summary": "A NULL pointer dereference in the mod_authn_socache in Apache HTTP Server 2.4.66 and earlier allows an unauthenticated remote user to crash a child process in a caching forward proxy configuration.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes this issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-33523",
+                            "cvss": 6.5,
+                            "summary": "HTTP response splitting vulnerability in multiple Apache HTTP Server modules with untrusted or compromised backend servers.\n\nThis issue affects Apache HTTP Server: from through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29168",
+                            "cvss": 7.3,
+                            "summary": "Allocation of Resources Without Limits or Throttling vulnerability in Apache HTTP Server's\u00a0 mod_md via OCSP response data.\n\nThis issue affects Apache HTTP Server: from 2.4.30 through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-28780",
+                            "cvss": 9.8,
+                            "summary": "Heap-based Buffer Overflow vulnerability in mod_proxy_ajp of Apache HTTP Server.\nIf mod_proxy_ajp connects to a malicious AJP server this AJP server can send a malicious AJP message back to mod_proxy_ajp and cause it to write 4 attacker controlled bytes after the end of a heap based buffer.\n\nThis issue affects Apache HTTP Server: through 2.4.66.\n\nUsers are recommended to upgrade to version 2.4.67, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29167",
+                            "cvss": 9.8,
+                            "summary": "Use After Free vulnerability in Apache HTTP Server with mod_ldap in per-directory configuration\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-29170",
+                            "cvss": 6.1,
+                            "summary": "A cross-site scripting vulnerability exists in mod_proxy_ftp's HTML directory list generation in Apache HTTP Server 2.4.67 and earlier when listing FTP directory contents either via forward or reverse proxy configuration.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34355",
+                            "cvss": 7.5,
+                            "summary": "A buffer overflow in mod_proxy_html in Apache HTTP Server 2.4.67 and earlier allows an attack by an untrusted backend.\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-34356",
+                            "cvss": 7.5,
+                            "summary": "Heap-based Buffer Overflow vulnerability in Apache HTTP Server with malicious backend servers and ProxyPassReverseCookie*\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-42535",
+                            "cvss": 9.1,
+                            "summary": "A path handling issue in mod_dav_fs in Apache 2.4.67 and earlier\u00a0allows a WebDAV content author to directly manipulate trusted DAV property databases, potentially causing child process crashes.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes this issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-42536",
+                            "cvss": 7.5,
+                            "summary": "Heap-based Buffer Overflow vulnerability in Apache HTTP Server with\u00a0mod_xml2enc, xml2StartParse, and untrusted content\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-43951",
+                            "cvss": 6.5,
+                            "summary": "Out-of-bounds Read vulnerability in Apache HTTP Server with mod_headers and mod_mime and multiple response languages.\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44119",
+                            "cvss": 5.5,
+                            "summary": "Improper Privilege Management vulnerability in Apache HTTP Server 2.4.67 and earlier allows local .htaccess authors to read files with the privileges of the httpd user.\n\nThis issue affects Apache HTTP Server: from through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44185",
+                            "cvss": 7.3,
+                            "summary": "Buffer Over-read vulnerability in Apache HTTP Server via outbound OCSP requests to an attacker controlled OCSP server\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44186",
+                            "cvss": 7.3,
+                            "summary": "Loop with Unreachable Exit Condition ('Infinite Loop') vulnerability in the mod_proxy_ftp module in Apache HTTP Server with an attacker controlled backend FTP server.\n\nThis issue affects undefined: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-44631",
+                            "cvss": 9.8,
+                            "summary": "Buffer Underwrite vulnerability in Apache HTTP Server on crafted regular expressions in the configuration.\n\nThis issue affects Apache HTTP Server: from 2.4.0 through 2.4.67.\n\nUsers are recommended to upgrade to version 2.4.68, which fixes the issue.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-48913",
+                            "cvss": 7.3,
+                            "summary": "Use After Free vulnerability in Apache HTTP Server module mod_http2 when file handles are already exhausted.\n\nThis issue affects Apache HTTP Server: from 2.4.55 through 2.4.67.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        },
+                        {
+                            "cve_id": "CVE-2026-49975",
+                            "cvss": 7.5,
+                            "summary": "Memory Allocation with Excessive Size Value vulnerability in Apache HTTP Server's mod_http leads to denial of service via malicious HTTP requests.\n\nThis issue affects Apache HTTP Server: from 2.4.17 through 2.4.67.",
+                            "matched_cpe": "cpe:2.3:a:apache:http_server:2.4.66"
+                        }
+                    ]
+                }
+            }
+        },
+        "110.0.4.4": {
+            "mac": "00:00:00:00:00:C1",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "110.0.4.1": {
+            "mac": "localhost",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "210.0.3.0/24": {
+        "210.0.3.2": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "210.0.3.6": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "210.0.3.7": {
+            "mac": "null",
+            "os": "Linux 5.3 - 5.4 (100%)",
+            "ports": [
+                53
+            ],
+            "services": {
+                "53/tcp": {
+                    "description": "tcpwrapped",
+                    "cpe": [],
+                    "vulnerabilities": []
+                }
+            }
+        },
+        "210.0.3.8": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "10.0.1.0/30": {
+        "10.0.1.1": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "10.0.1.2": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "10.0.0.0/30": {
+        "10.0.0.1": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "10.0.0.2": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    },
+    "210.0.4.0/24": {
+        "210.0.4.3": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        },
+        "210.0.4.9": {
+            "mac": "null",
+            "os": "Linux 3.1 (95%) | Linux 3.2 (95%) | AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%) | ASUS RT-N56U WAP (Linux 3.4) (93%) | Linux 3.16 (93%)",
+            "ports": [
+                53
+            ],
+            "services": {
+                "53/tcp": {
+                    "description": "domain: ISC BIND (9.18.44-1~deb12u1) Debian Linux",
+                    "cpe": [
+                        "cpe:/a:isc:bind:9.18.44-1~deb12u1",
+                        "cpe:/o:linux:linux_kernel"
+                    ],
+                    "vulnerabilities": [
+                        {
+                            "cve_id": "CVE-2026-1519",
+                            "cvss": 7.5,
+                            "summary": "If a BIND resolver is performing DNSSEC validation and encounters a maliciously crafted zone, the resolver may consume excessive CPU. Authoritative-only servers are generally unaffected, although there are circumstances where authoritative servers may make recursive queries (see: https://kb.isc.org/docs/why-does-my-authoritative-server-make-recursive-queries).\nThis issue affects BIND 9 versions 9.11.0 through 9.16.50, 9.18.0 through 9.18.46, 9.20.0 through 9.20.20, 9.21.0 through 9.21.19, 9.11.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.46-S1, and 9.20.9-S1 through 9.20.20-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-3039",
+                            "cvss": 7.5,
+                            "summary": "BIND servers that are configured to use TKEY-based authentication via GSS-API tokens are vulnerable to excessive memory consumption when receiving and processing maliciously-constructed packets.  Typically these servers will be found in Active Directory integrated DNS deployments and/or Kerberos-secured DNS environments.\nThis issue affects BIND 9 versions 9.0.0 through 9.16.50, 9.18.0 through 9.18.48, 9.20.0 through 9.20.22, 9.21.0 through 9.21.21, 9.9.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-3592",
+                            "cvss": 5.3,
+                            "summary": "BIND resolvers are vulnerable to an amplified resource consumption/exhaustion attack.  If a victim resolver makes a query to a specially crafted zone, the resolver will consume disproportionate resources.\nThis issue affects BIND 9 versions 9.11.0 through 9.16.50, 9.18.0 through 9.18.48, 9.20.0 through 9.20.22, 9.21.0 through 9.21.21, 9.11.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-5946",
+                            "cvss": 7.5,
+                            "summary": "Multiple flaws have been identified in `named` related to the handling of DNS messages whose CLASS is not Internet (`IN`) \u2014 for example, `CHAOS` or `HESIOD`, or DNS messages that specify meta-classes (`ANY` or `NONE`) in the question section. Specially crafted requests reaching the affected code paths \u2014 recursion, dynamic updates (`UPDATE`), zone change notifications (`NOTIFY`), or processing of `IN`-specific record types in non-`IN` data \u2014 can cause assertion failures in `named`.\nThis issue affects BIND 9 versions 9.11.0 through 9.16.50, 9.18.0 through 9.18.48, 9.20.0 through 9.20.22, 9.21.0 through 9.21.21, 9.11.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-5950",
+                            "cvss": 5.3,
+                            "summary": "An unbounded resend loop vulnerability exists in the BIND 9 resolver state machine during bad-server handling, enabling a remote unauthenticated attacker to cause severe resource exhaustion by sending queries that trigger specific retry conditions.\nThis issue affects BIND 9 versions 9.18.36 through 9.18.48, 9.20.8 through 9.20.22, 9.21.7 through 9.21.21, 9.18.36-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        }
+                    ]
+                },
+                "53/udp": {
+                    "description": "domain: ISC BIND (9.18.44-1~deb12u1) Debian Linux",
+                    "cpe": [
+                        "cpe:/a:isc:bind:9.18.44-1~deb12u1",
+                        "cpe:/o:linux:linux_kernel"
+                    ],
+                    "vulnerabilities": [
+                        {
+                            "cve_id": "CVE-2026-1519",
+                            "cvss": 7.5,
+                            "summary": "If a BIND resolver is performing DNSSEC validation and encounters a maliciously crafted zone, the resolver may consume excessive CPU. Authoritative-only servers are generally unaffected, although there are circumstances where authoritative servers may make recursive queries (see: https://kb.isc.org/docs/why-does-my-authoritative-server-make-recursive-queries).\nThis issue affects BIND 9 versions 9.11.0 through 9.16.50, 9.18.0 through 9.18.46, 9.20.0 through 9.20.20, 9.21.0 through 9.21.19, 9.11.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.46-S1, and 9.20.9-S1 through 9.20.20-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-3039",
+                            "cvss": 7.5,
+                            "summary": "BIND servers that are configured to use TKEY-based authentication via GSS-API tokens are vulnerable to excessive memory consumption when receiving and processing maliciously-constructed packets.  Typically these servers will be found in Active Directory integrated DNS deployments and/or Kerberos-secured DNS environments.\nThis issue affects BIND 9 versions 9.0.0 through 9.16.50, 9.18.0 through 9.18.48, 9.20.0 through 9.20.22, 9.21.0 through 9.21.21, 9.9.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-3592",
+                            "cvss": 5.3,
+                            "summary": "BIND resolvers are vulnerable to an amplified resource consumption/exhaustion attack.  If a victim resolver makes a query to a specially crafted zone, the resolver will consume disproportionate resources.\nThis issue affects BIND 9 versions 9.11.0 through 9.16.50, 9.18.0 through 9.18.48, 9.20.0 through 9.20.22, 9.21.0 through 9.21.21, 9.11.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-5946",
+                            "cvss": 7.5,
+                            "summary": "Multiple flaws have been identified in `named` related to the handling of DNS messages whose CLASS is not Internet (`IN`) \u2014 for example, `CHAOS` or `HESIOD`, or DNS messages that specify meta-classes (`ANY` or `NONE`) in the question section. Specially crafted requests reaching the affected code paths \u2014 recursion, dynamic updates (`UPDATE`), zone change notifications (`NOTIFY`), or processing of `IN`-specific record types in non-`IN` data \u2014 can cause assertion failures in `named`.\nThis issue affects BIND 9 versions 9.11.0 through 9.16.50, 9.18.0 through 9.18.48, 9.20.0 through 9.20.22, 9.21.0 through 9.21.21, 9.11.3-S1 through 9.16.50-S1, 9.18.11-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        },
+                        {
+                            "cve_id": "CVE-2026-5950",
+                            "cvss": 5.3,
+                            "summary": "An unbounded resend loop vulnerability exists in the BIND 9 resolver state machine during bad-server handling, enabling a remote unauthenticated attacker to cause severe resource exhaustion by sending queries that trigger specific retry conditions.\nThis issue affects BIND 9 versions 9.18.36 through 9.18.48, 9.20.8 through 9.20.22, 9.21.7 through 9.21.21, 9.18.36-S1 through 9.18.48-S1, and 9.20.9-S1 through 9.20.22-S1.",
+                            "matched_cpe": "cpe:2.3:a:isc:bind:9.18.44"
+                        }
+                    ]
+                }
+            }
+        },
+        "210.0.4.10": {
+            "mac": "null",
+            "os": "",
+            "ports": [],
+            "services": {}
+        }
+    }
+}
