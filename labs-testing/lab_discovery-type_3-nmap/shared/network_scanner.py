@@ -54,8 +54,8 @@ else:
 #       "ip_address": {
 #           "mac": str, 
 #           "os": str, 
-#           "ports": list, 
-#           "services": { "port/protocol": {"description": str, "cpe": list, "vulnerabilities": list} }
+#           "ports": [], 
+#           "services": { "port/protocol": {"description": str, "cpe": [], "vulnerabilities": [] } }
 #       }
 #   }
 # }
