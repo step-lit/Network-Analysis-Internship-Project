@@ -50,7 +50,7 @@ Prima di procedere con l'avvio dello script è necessario disporre di:
 - **Kathará** — il network emulator usato per l'avvio dei laboratori di rete.
   - Sito ufficiale: https://www.kathara.org/
   - Guida all'installazione: https://www.kathara.org/docs/install.html
-  - Documentazione/comandi: https://github.com/KatharáFramework/Kathará/wiki
+  - Documentazione/wiki: https://github.com/KatharaFramework/Kathara/wiki
 
 **Opzionale**: Se si intende eseguire lo script al di fuori di un lab Kathará e dei container previsti, è necessario installare il software Nmap. Inoltre, per installare le dipendenze Python elencate in `requirements.txt`, eseguire il seguente comando:
 
@@ -98,7 +98,7 @@ Per la richiesta di una API key personale o per la propria organizzazione: https
 Aprire il terminale nella directory principale del lab (quella contenente il file di configurazione del lab, es. `lab.conf`) ed eseguire:
 
 ```bash
-Kathará lstart
+kathara lstart
 ```
 
 Kathará avvierà tutti i dispositivi del lab. A questo punto è necessario posizionarsi su una delle macchine che dispone della libreria `nmap3` (nello specifico `pc1`, `pc7` o `pc10`) e lanciare manualmente lo script:
@@ -120,21 +120,21 @@ Lo script verrà così eseguito sull'host scelto e produrrà i risultati della s
 Una volta concluse le verifiche, per l'arresto e la pulizia di tutti i dispositivi del lab:
 
 ```bash
-Kathará lclean
+kathara lclean
 ```
 
 Per un riavvio del lab e di tutti i dispositivi ad esso connessi:
 
 ```bash
-Kathará lrestart
+kathara lrestart
 ```
 
 
 ## Risorse utili
 
-- Nmap — sito ufficiale: https://nmap.org/
-- Kathará — sito ufficiale: https://www.kathara.org/
-- Kathará — documentazione/wiki: https://github.com/KatharáFramework/Kathará/wiki
-- Docker — guida installazione: https://docs.docker.com/get-docker/
-- NIST NVD — richiesta API key: https://nvd.nist.gov/developers/request-an-api-key
-- NIST NVD — documentazione API: https://nvd.nist.gov/developers/vulnerabilities
+- Nmap - sito ufficiale: https://nmap.org/
+- Kathará - sito ufficiale: https://www.kathara.org/
+- Kathará - documentazione/wiki: https://github.com/KatharaFramework/Kathara/wiki
+- Docker - guida all'installazione: https://docs.docker.com/get-docker/
+- NIST NVD - richiesta API key: https://nvd.nist.gov/developers/request-an-api-key
+- NIST NVD - documentazione API: https://nvd.nist.gov/developers/vulnerabilities
